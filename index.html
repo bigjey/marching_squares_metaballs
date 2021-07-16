@@ -1,32 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Marching Squares & Metaballs</title>
-  </head>
-  <body>
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        position: relative;
-        width: 100%;
-        height: 100%;
-      }
-      body {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-      }
-      canvas {
-        display: block;
-        margin: auto;
-      }
-    </style>
-    <script src="./marching_squares.ts"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marching Squares & Metaballs</title>
+</head>
+
+<body>
+  <style>
+    html,
+    body {
+      padding: 0;
+      margin: 0;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      font-family: monospace;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    .layout {
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .legend {
+      display: inline-block;
+      text-align-last: left;
+    }
+  </style>
+  <div class="layout">
+    <canvas id="canvas"></canvas>
+    <br />
+    <div>
+      <div class="legend">
+        1: toggle balls<br />
+        2: toggle samples grid<br />
+        3: toggle outline<br />
+        4: toggle outline smoothing<br />
+        +/-: change samples resolution (10-100)
+      </div>
+    </div>
+  </div>
+
+  <script src="./marching_squares.ts"></script>
+</body>
+
 </html>

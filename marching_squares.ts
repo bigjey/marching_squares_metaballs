@@ -1,23 +1,21 @@
 {
-  const canvas: HTMLCanvasElement = document.createElement("canvas");
+  const canvas: HTMLCanvasElement = document.getElementById("canvas") as HTMLCanvasElement;
   const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
 
-  const W = 800;
-  const H = 600;
-
   let CELL_SIZE = 50;
+  const W = 900;
+  const H = 700;
+
   let COLS = W / CELL_SIZE;
   let ROWS = H / CELL_SIZE;
 
-  let renderDebug = true;
   let renderBalls = true;
-  let renderContour = true;
-  let smoothEdges = true;
+  let renderSamplesGrid = false;
+  let renderOutline = false;
+  let smoothOutline = false;
 
   canvas.height = H;
   canvas.width = W;
-
-  document.body.appendChild(canvas);
 
   const tick = () => {
     update();
@@ -80,7 +78,7 @@
     ctx.fillRect(0, 0, W, H);
 
     // debug info
-    if (renderDebug) {
+    if (renderSamplesGrid) {
       ctx.strokeStyle = "#fff3";
       for (let x = 0; x < COLS; x++) {
         for (let y = 0; y < ROWS; y++) {
@@ -144,7 +142,7 @@
 
     // contour
     ctx.strokeStyle = "#990f";
-    if (renderContour) {
+    if (renderOutline) {
       for (let x = 0; x < COLS - 1; x++) {
         for (let y = 0; y < ROWS - 1; y++) {
           const sampleX = x * CELL_SIZE + CELL_SIZE * 0.5;
@@ -172,7 +170,7 @@
           let Wy = 0.5;
           let Ey = 0.5;
 
-          if (smoothEdges) {
+          if (smoothOutline) {
             Nx = (value & 4) === (value & 8) ? 0.5 : lerp(s1, s2, 0, 1, 1);
             Sx = (value & 1) === (value & 2) ? 0.5 : lerp(s4, s3, 0, 1, 1);
             Wy = (value & 1) === (value & 8) ? 0.5 : lerp(s1, s4, 0, 1, 1);
@@ -239,10 +237,12 @@
       }
     }
 
-    ctx.fillStyle = "#fff";
-    ctx.strokeStyle = "#fff";
-    ctx.font = "20px arial";
-    ctx.fillText("" + CELL_SIZE, 10, 30);
+    ctx.fillStyle = "#fffd";
+    ctx.strokeStyle = "#fffd";
+    ctx.font = "18px arial";
+    ctx.fillText("resolution: " + CELL_SIZE, 10, 30);
+
+    ctx.fillText("smooth: " + (smoothOutline ? 'on' : 'off'), 10, 60);
   };
 
   const drawLine = (A, B) => {
@@ -282,18 +282,15 @@
     if (e.key === "1") {
       renderBalls = !renderBalls;
     } else if (e.key === "2") {
-      renderDebug = !renderDebug;
+      renderSamplesGrid = !renderSamplesGrid;
     } else if (e.key === "3") {
-      renderContour = !renderContour;
+      renderOutline = !renderOutline;
     } else if (e.key === "4") {
-      smoothEdges = !smoothEdges;
+      smoothOutline = !smoothOutline;
     } else if (e.key === "+" || e.key === "=") {
-      CELL_SIZE += 10;
+      CELL_SIZE = Math.min(100, CELL_SIZE + 10)
     } else if (e.key === "-") {
-      CELL_SIZE -= 10;
-      if (CELL_SIZE < 10) {
-        CELL_SIZE = 10;
-      }
+      CELL_SIZE = Math.max(10, CELL_SIZE - 10)
     }
   });
 }
